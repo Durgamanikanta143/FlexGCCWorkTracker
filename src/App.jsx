@@ -46,13 +46,42 @@ export default function App() {
   const pages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const visible = filtered.slice((page - 1) * pageSize, page * pageSize);
   const count = value => items.filter(x => x.status === value).length;
-
+  
   async function create(payload) {
-    setSaving(true); setError(""); setMessage("");
-    try { await api.create(payload); setFormOpen(false); setMessage("Work request created successfully."); await load(); return true; }
-    catch (e) { setError(`Unable to create request. ${e.message}`); return false; }
-    finally { setSaving(false); }
-  }
+      setSaving(true);
+      setError("");
+      setMessage("");
+
+      try {
+        await api.create(payload);
+
+        setFormOpen(false);
+        setMessage("Work request created successfully.");
+        await load();
+
+        return true;
+      } catch (e) {
+        const errorMessage = (e?.message || "").toLowerCase();
+
+        if (
+          errorMessage.includes("failed to fetch") ||
+          errorMessage.includes("network") ||
+          errorMessage.includes("fetch")
+        ) {
+          setError(
+            "Unable to connect to the server. Your request could not be saved. Please try again in a few minutes."
+          );
+        } else {
+          setError(
+            "Unable to create the work request. Please check your details and try again."
+          );
+        }
+
+        return false;
+      } finally {
+        setSaving(false);
+      }
+    }
   async function changeStatus(id, next) {
     setError(""); setMessage("");
     try {
@@ -136,8 +165,36 @@ export default function App() {
           <article className="stat yellow"><div className="stat-icon"><Clock3/></div><div><span>In Progress</span><strong>{count("InProgress")}</strong><small>Currently active</small></div></article>
           <article className="stat red"><div className="stat-icon"><CircleAlert/></div><div><span>Blocked</span><strong>{count("Blocked")}</strong><small>Needs attention</small></div></article>
         </div>
-        {error && <div className="alert error"><CircleAlert size={17}/><span>{error}</span><button onClick={load}>Retry</button><button className="icon" onClick={() => setError("")} aria-label="Dismiss"><X size={16}/></button></div>}
-        {message && <div className="alert success"><CheckCircle2 size={17}/><span>{message}</span><button className="icon" onClick={() => setMessage("")} aria-label="Dismiss"><X size={16}/></button></div>}
+       {error && (
+          <div className="alert error">
+            <CircleAlert size={20} />
+
+            <div className="error-content">
+              <strong>Unable to connect to the server</strong>
+              <span>
+                Your request could not be saved. Please try again in a few minutes.
+              </span>
+            </div>
+
+            <button
+              type="button"
+              className="btn secondary"
+              onClick={load}
+            >
+              Retry
+            </button>
+
+            <button
+              type="button"
+              className="icon"
+              onClick={() => setError("")}
+              aria-label="Dismiss error"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        )}
+                {message && <div className="alert success"><CheckCircle2 size={17}/><span>{message}</span><button className="icon" onClick={() => setMessage("")} aria-label="Dismiss"><X size={16}/></button></div>}
         <section className="card">
           <div className="card-heading"><div><h2>Work Requests</h2><p>Review and manage your client work items.</p></div><button className="btn primary" onClick={() => setFormOpen(true)}><Plus size={17}/>New Request</button></div>
           <div className="filters">
@@ -147,10 +204,10 @@ export default function App() {
             <label className="date-filter"><CalendarDays size={16}/><input type="date" value={due} onChange={e => setDue(e.target.value)} aria-label="Due date filter"/></label>
             <button className="btn quiet" onClick={clear}>Clear</button>
           </div>
-          <div className="table-wrap"><table><thead><tr><th>#</th><th>Title</th><th>Client Name</th><th>Status</th><th>Priority</th><th>Due Date</th><th>Created On</th><th>Actions</th></tr></thead>
+          <div className="table-wrap"><table><thead><tr><th>S.NO</th><th>Title</th><th>Description</th><th>Client Name</th><th>Status</th><th>Priority</th><th>Due Date</th><th>Created On</th><th>Actions</th></tr></thead>
             <tbody>{loading ? <tr><td colSpan="8"><div className="empty"><RefreshCw className="spin"/>Loading requests…</div></td></tr> :
               visible.length === 0 ? <tr><td colSpan="8"><div className="empty"><Inbox size={25}/><b>No work requests found</b><span>Try another filter or create a request.</span></div></td></tr> :
-              visible.map((x, i) => <tr key={x.id}><td>{(page - 1) * pageSize + i + 1}</td><td className="title-cell"><b>{x.title}</b><small>{x.description || "No description"}</small></td><td>{x.clientName}</td>
+              visible.map((x, i) => <tr key={x.id}><td>{(page - 1) * pageSize + i + 1}</td><td className="title-cell"><b>{x.title}</b></td><td><small>{x.description || "No description"}</small></td><td>{x.clientName}</td>
                 <td><select className={`status-select s-${(x.status || "new").toLowerCase()}`} value={x.status} onChange={e => changeStatus(x.id, e.target.value)} aria-label={`Change ${x.title} status`}>{STATUSES.map(s => <option key={s} value={s}>{LABEL[s]}</option>)}</select></td>
                 <td><span className={`badge p-${(x.priority || "medium").toLowerCase()}`}>{x.priority}</span></td><td>{dateText(x.dueDate)}</td><td>{dateText(x.createdAt)}</td>
                <td>

@@ -263,3 +263,137 @@
   background-color: #1f2937;
   color: #f9fafb;
 }
+.alert.error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.error-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+
+.error-content strong {
+  font-size: 13px;
+  color: #a82a35;
+}
+
+.error-content span {
+  font-size: 12px;
+  color: #7f2932;
+  line-height: 1.5;
+}
+
+.alert.error .btn {
+  flex-shrink: 0;
+}
+
+
+/* Responsive table container */
+.table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fixed column layout with enough room for every field */
+.table-wrap table {
+  width: 100%;
+  min-width: 1120px;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+/* Column widths */
+.table-wrap th:nth-child(1),
+.table-wrap td:nth-child(1) {
+  width: 50px;
+}
+
+.table-wrap th:nth-child(2),
+.table-wrap td:nth-child(2) {
+  width: 120px;
+}
+
+.table-wrap th:nth-child(3),
+.table-wrap td:nth-child(3) {
+  width: 280px;
+}
+
+.table-wrap th:nth-child(4),
+.table-wrap td:nth-child(4) {
+  width: 130px;
+}
+
+.table-wrap th:nth-child(5),
+.table-wrap td:nth-child(5) {
+  width: 120px;
+}
+
+.table-wrap th:nth-child(6),
+.table-wrap td:nth-child(6) {
+  width: 90px;
+}
+
+.table-wrap th:nth-child(7),
+.table-wrap td:nth-child(7),
+.table-wrap th:nth-child(8),
+.table-wrap td:nth-child(8) {
+  width: 110px;
+}
+
+.table-wrap th:nth-child(9),
+.table-wrap td:nth-child(9) {
+  width: 110px;
+}
+
+/* Description wraps inside its own column */
+.description-cell {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+/* Other columns should remain readable */
+.table-wrap th,
+.table-wrap td {
+  box-sizing: border-box;
+  padding: 12px 10px;
+  vertical-align: middle;
+}
+
+.table-wrap th {
+  white-space: nowrap;
+}
+
+.table-wrap td {
+  overflow: hidden;
+}
+
+/* Keep action buttons in one row */
+.table-wrap td:nth-child(9) .actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+/* Small screens */
+@media (max-width: 768px) {
+  .table-wrap table {
+    min-width: 1120px;
+  }
+
+  .table-wrap th,
+  .table-wrap td {
+    padding: 10px 8px;
+  }
+}
