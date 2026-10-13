@@ -163,3 +163,103 @@
     display: none;
   }
 }
+
+/* Fix dashboard statistics text in dark mode */
+.dark-mode .stat span,
+.dark-mode .stat strong,
+.dark-mode .stat small {
+  color: #172b4d;
+}
+
+/* Keep descriptions readable */
+.dark-mode .page-heading h1,
+.dark-mode .page-heading p {
+  color: #f1f5f9;
+}
+
+.dark-mode .card-heading h2 {
+  color: #f1f5f9;
+}
+
+.dark-mode .card-heading p {
+  color: #cbd5e1;
+}
+
+/* Table text */
+.dark-mode th {
+  color: #e5e7eb;
+}
+
+.dark-mode td {
+  color: #f1f5f9;
+}
+
+/* Empty state */
+.dark-mode .empty,
+.dark-mode .empty b {
+  color: #cbd5e1;
+}
+
+/* Footer */
+.dark-mode .table-footer,
+.dark-mode .page-footer {
+  color: #cbd5e1;
+}
+
+/* Modal and form text */
+.dark-mode .modal,
+.dark-mode .notes-panel {
+  background: #1f2937;
+  color: #f9fafb;
+}
+
+.dark-mode .modal-head h2,
+.dark-mode .form-grid label,
+.dark-mode .detail-grid b,
+.dark-mode .note b {
+  color: #f9fafb;
+}
+
+.dark-mode .form-grid input,
+.dark-mode .form-grid select,
+.dark-mode .form-grid textarea,
+.dark-mode .note-form input {
+  background: #111827;
+  color: #f9fafb;
+  border-color: #4b5563;
+}
+
+.dark-mode .description {
+  background: #273449;
+  color: #e5e7eb;
+}
+
+.dark-mode .detail-grid div {
+  border-color: #4b5563;
+}
+
+.dark-mode .detail-grid span,
+.dark-mode .note p {
+  color: #cbd5e1;
+}
+/* Fix dropdown option visibility in dark mode */
+.dark-mode select,
+.dark-mode .filter select,
+.dark-mode .status-select {
+  color: #f9fafb;
+  background-color: #1f2937;
+}
+
+/* Dropdown options */
+.dark-mode select option,
+.dark-mode .filter select option,
+.dark-mode .status-select option {
+  background-color: #1f2937;
+  color: #f9fafb;
+}
+
+/* Priority and status dropdowns */
+.dark-mode .form-grid select option {
+  background-color: #1f2937;
+  color: #f9fafb;
+}
